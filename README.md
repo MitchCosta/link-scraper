@@ -12,7 +12,7 @@ In this version the Linkedin username and password must be passed when construct
 First version
 Lots to improve:
 
-make the json scraper more robust.
-add except, try.
-clean the code.
-remove prints to debug.
+Make the json scraper more robust.
+Add except, try.
+Clean the code.
+Remove prints to debug.
