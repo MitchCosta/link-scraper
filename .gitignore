@@ -1,0 +1,13 @@
+.idea/
+__pycache__/
+chromedriver.exe
+emma_profile.html
+exppp.py
+json_data.txt
+json_data_keys.txt
+link_scraper.py
+linkedin_scraper.py
+links & xPath.txt
+main.py
+my_file.txt
+people_file.csv
