@@ -21,25 +21,23 @@ class MyScraper:
         # hit submit button
         self.driver.find_element_by_xpath('//*[@type="submit"]').click()
 
+
     def set_search(self, list_to_search):
-        # list of search parameters : ["head of people", "head of people culture", "head of people operations"]
-        # return a list of url's
+
         links_to_search = []
         for parameters in list_to_search:
-
             search = parameters.split()
             search = "%20".join(search)
             search += "%20"
             url = 'https://www.linkedin.com/search/results/people/?keywords='
             search_url = url + search
             links_to_search.append(search_url)
-
         return links_to_search
+
 
     def search_people(self, links_to_search, number_to_achieve):
         # a list of "ready to search" url's
         # int, number of search per item in the previous list
-        # url = 'https://www.linkedin.com/search/results/people/?keywords=head%20of%20people%20brisbane&sid=q8P'
         # Output -> a list people links
 
         people_links = []
@@ -53,7 +51,6 @@ class MyScraper:
             while number_of_links < number_to_achieve:
 
                 req = self.driver.page_source
-
                 soup = BeautifulSoup(req, "html.parser")
 
                 anchor_tags = soup.find_all(name='a', class_='app-aware-link')
@@ -80,15 +77,11 @@ class MyScraper:
                 print("sleep for 2 sec")
                 time.sleep(2)
 
-                # number_of_links += len(people_links)
-                # check if need to click NEXT (chevron)
-                print(f" number_of_links {number_of_links}")
-                print(f" number_to_achieve {number_to_achieve}")
+                #print(f" number_of_links {number_of_links}")
+                #print(f" number_to_achieve {number_to_achieve}")
 
                 if number_of_links <= number_to_achieve:
                     self.driver.find_element_by_xpath('//*[@type="chevron-right-icon"]').click()
-                    print("CLICKED  CLICKED  CLICKED  CLICKED")
-                    print("sleep for 3 sec")
                     time.sleep(2)
 
 
@@ -102,40 +95,8 @@ class MyScraper:
 
         for people in people_links:
             print(people)
-        # print(len(people_links))
         return people_links
 
-    def search_profile(self, url):
-        # NOT USED   NOT USED   NOT USED   NOT USED
-        # input -> link to profile
-        # output -> list with result
-
-        # url = 'https://www.linkedin.com/in/emmadwyer?miniProfileUrn=urn%3Ali%3Afs_miniProfile%3AACoAAAEy3yEBpLbsxI5oKhT4UFKJ0et4gdSzk5Q'
-        self.driver.get(url)
-        req = self.driver.page_source
-
-        soup = BeautifulSoup(req, "html.parser")
-
-        # name = soup.find_all(name='h1', class_='top-card-layout__title')
-        # company = soup.find_all(name='div', class_='inline-show-more-text')
-        # about = soup.find_all(name='div', class_='inline-show-more-text')
-
-        another = self.driver.find_element_by_xpath('//*[@type="submit"]')
-        name = self.driver.find_element_by_xpath('//*[@id="ember42"]/div[2]/div[2]/div[1]/div[1]/h1').text
-        title = self.driver.find_element_by_xpath('//*[@id="ember42"]/div[2]/div[2]/div[1]/div[2]').text
-        company = self.driver.find_element_by_xpath('//*[@id="ember42"]/div[2]/div[2]/ul/li[1]/a/h2/div').text
-        location = self.driver.find_element_by_xpath('//*[@id="ember42"]/div[2]/div[2]/div[2]/span[1]').text
-        # about = self.driver.find_element_by_xpath('//*[@id="ember156"]/div').text
-        about = "Cannot get it"
-        # about = soup.find(name='div', class_='inline-show-more-text')
-
-        print(name)
-        print(title)
-        print(company)
-        print(location)
-        print(about)
-
-        return [name, title, company, location, about]
 
     def search_profile_fyang(self, url):
 
@@ -150,11 +111,7 @@ class MyScraper:
         else:
             profile_data = {}
             json_data = json.loads(profile_tag.getText())
-            # print("-------------------------------------------")
-            # print(json_data)
             for key in json_data["included"]:
-                # print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                # print(key)
                 if "firstName" in key:
                     name = f"{key['firstName']} {key['lastName']}"
                     profile_data["name"] = name
@@ -182,3 +139,4 @@ class MyScraper:
             if "multiLocaleSummary" in tag.getText():
                 return tag
         return None
+
